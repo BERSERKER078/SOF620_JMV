@@ -1,0 +1,32 @@
+var _datosTipos;
+function mostrarDatosTipos(){
+    limpiarTabla('tblTipo');
+    $.each(_datosTipos, function (index, elemento){
+        var fila = $('<tr>').attr('id', elemento.idtipo);
+        fila.append(col(elemento.idtipo).addClass("alinearCentro"));
+        fila.append(col(elemento.nombre));
+        fila.append(col(elemento.descripcion));
+        $('#tblTipo tbody').append(fila);
+    })
+}
+function getTiposExitoso(resultado) {
+    if(resultado.Success) {
+        toastr.success("Cargado Exitoso");
+        _datosTipos = resultado.Data;
+        mostrarDatosTipos();
+        } else{
+            toastr.error(resultado.Mensaje);
+        }
+}
+function init(){
+    var url = "/obtenerTipos";
+    var tipo = 'GET';
+    var datos = {};
+    var tipoDatos = 'JSON';
+    solicitudAjax(url, getTiposExitoso, datos, tipoDatos, tipo);
+}
+//lo que puede ser 2//
+
+$(document).ready(function(){
+    init();
+});
